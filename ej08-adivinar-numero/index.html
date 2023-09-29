@@ -11,9 +11,10 @@
 <body>
 <div class="container">
     <h1>Guess a random number between 1 and 100. You only have 6 tries!</h1>
+    <button onclick="empezarPartida()" id="botonEmpezar" class="btn btn-primary" type="button">Start</button>
     <div class="input-group mb-3">
-        <input type="number" id="inputIntentos" min="1" max="100" class="form-control" placeholder="Write a number between 1 and 100">
-        <button id="botonComprobar" class="btn btn-info" type="button">Check</button>
+        <input type="number" id="inputIntentos" min="1" max="100" class="form-control" placeholder="Write an integer number between 1 and 100" disabled>
+        <button onclick="comprobarNumero()" id="botonComprobar" class="btn btn-info" type="button">Check</button>
     </div>
     <div class="form-floating mb-3">
         <textarea class="form-control" id="textareaSalida" style="height: 200px" disabled></textarea>
