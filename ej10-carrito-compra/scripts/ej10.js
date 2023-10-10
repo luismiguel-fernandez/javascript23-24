@@ -52,12 +52,24 @@ btnInvSel.addEventListener("click",function(){
     let lis = mylist.querySelectorAll("li")
     lis.forEach( li => li.classList.toggle("seleccionado") )
 })
-btnDelSel.addEventListener("click",function(){
-    let lis = mylist.querySelectorAll("li")
-    lis.forEach( li => {
-        if (li.classList.contains("seleccionado"))
-            li.remove()
+
+
+
+btnMovSel.addEventListener("click",function(){
+    let lis = mylist.querySelectorAll("li.seleccionado")
+    lis.forEach( li => { 
+        const nuevoLi = document.createElement("LI")
+        nuevoLi.textContent = li.textContent
+        mycart.append(nuevoLi)
+        li.remove()
     } )
+})
+btnDelSel.addEventListener("click",function(){
+    let lis = mylist.querySelectorAll("li.seleccionado")
+    lis.forEach( li => { li.remove() } )
+})
+btnEmpCar.addEventListener("click",function(){
+    mycart.innerHTML = ""
 })
 
 
