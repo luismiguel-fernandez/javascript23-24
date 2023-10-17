@@ -1,15 +1,23 @@
 //-------------------------------------
 //Declaración de variables y constantes
 //-------------------------------------
-
-let empresas = ["Apple","Google","IBM","Microsoft","Nvidia","Intel","Embargos a lo bestia"]
-let preferencias = []
 const studentName = document.querySelector("#studentName")
 const choice1 = document.querySelector("#choice1")
 const choice2 = document.querySelector("#choice2")
 const insertButton = document.querySelector("#insertButton")
 const studentsChoices = document.querySelector("#studentsChoices>tbody")
 let cleanStudentName = true
+
+let empresas = ["Apple","Google","IBM","Microsoft","Nvidia","Intel","Embargos a lo bestia"]
+
+let preferencias = localStorage.getItem("preferencias")
+if (preferencias) {
+    preferencias = JSON.parse(preferencias)
+    imprimirPreferencias()
+} else
+    preferencias = []
+
+
 
 //----------------------------------------------------------------------------
 //Estas líneas se ejecutan automáticamente al cargar la página en el navegador
@@ -99,6 +107,8 @@ function insertarNuevasPreferencias() {
         empresa1: nombreEmpresa1,
         empresa2: nombreEmpresa2
     })
+    //Llevar el array preferencias de nuevo al localStorage
+    localStorage.setItem("preferencias",JSON.stringify(preferencias))
     //mostrar en la consola para depurar programa
     console.table(preferencias)
     //por último, una vez insertada la nueva info en el array, hay que mostrarlo
@@ -112,7 +122,7 @@ function insertarNuevasPreferencias() {
 //----------------------------------------------------------------------------
 function imprimirPreferencias() {
     studentsChoices.innerHTML = ""
-    preferencias.forEach( pref => {
+    preferencias.forEach( (pref,indice) => {
         let newTR = studentsChoices.insertRow()
         let newTD1 = newTR.insertCell()
         let newTD2 = newTR.insertCell()
@@ -126,8 +136,18 @@ function imprimirPreferencias() {
         newButton.textContent = "Delete"
         newTD4.append(newButton)
         //falta hacer que el botón escuche el evento CLICK
-
+        newButton.addEventListener("click",function(){
+            preferencias.splice(indice,1)
+            //imprimirPreferencias() //redibuja todo, podría ser ineficienteç
+            newTR.remove()
+            localStorage.setItem("preferencias",JSON.stringify(preferencias))
+        })
         //falta también insertar otros botones para otras acciones
-        
+        let newButtonDown = document.createElement("button")
+        newButtonDown.classList.add("btn","btn-info")
+        newButtonDown.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+        </svg>`
+        newTD4.append(newButtonDown)
     })
 }
