@@ -9,10 +9,43 @@ tablero.style.height = ALTURA_TABLERO + "px"
 bola.style.width = DIAMETRO_BOLA + "px"
 bola.style.height = DIAMETRO_BOLA + "px"
 
-//1. El botón EMPEZAR debe inicializar una cuenta atrás de 10 segundos
-//  Al llegar a 0, se detiene (pista: clearInterval)
+const tiempo = document.querySelector("#tiempo")
+const puntos = document.querySelector("#puntos")
+const btnEmpezar = document.querySelector("#btnEmpezar")
 
-//2. Cada segundo que avanza la cuenta atrás, la bola cambia de sitio al azar
+let cuentaAtras
+let 
+let partidaEnMarcha = false
+
+//1. El botón EMPEZAR pone una partida en marcha
+btnEmpezar.addEventListener("click",function(){
+    //Acciones que ocurren cuando empieza una partida:
+    // a) Inicializar una cuenta atrás de 10 segundos
+    tiempo.textContent = 10
+    puntos.textContent = 0
+    clearInterval(cuentaAtras) //por si ya había una partida en marcha
+    cuentaAtras = setInterval(decrementarSegundos,1000)
+    moverBola()
+    partidaEnMarcha = true
+})
+
+//2. Cada segundo que avanza la cuenta atrás, la bola cambia de sitio al azar.
+//  Al llegar a 0, se detiene (pista: clearInterval)
+function decrementarSegundos() {
+    tiempo.textContent--
+    moverBola()
+    if (tiempo.textContent == "0") {
+        clearInterval(cuentaAtras)
+        partidaEnMarcha = false
+    }
+}
 
 //3. Que la bola sea clicable para sumar puntos SOLO con la partida en marcha 
+bola.addEventListener("click",function(){
+    if (partidaEnMarcha) puntos.textContent++
+})
 
+function moverBola() {
+    bola.style.top = Math.random() * (ALTURA_TABLERO - DIAMETRO_BOLA) + "px"
+    bola.style.left = Math.random() * (ANCHURA_TABLERO - DIAMETRO_BOLA) + "px"
+}
