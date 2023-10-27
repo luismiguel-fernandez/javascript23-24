@@ -23,6 +23,7 @@ let records = [
     {name: "George", points: "4"},
     {name: "Caroline", points: "2"}
 ]
+imprimirRecords()
 
 //1. El botón EMPEZAR pone una partida en marcha
 btnEmpezar.addEventListener("click",function(){
@@ -66,4 +67,17 @@ bola.addEventListener("click",function(){
 function moverBola() {
     bola.style.top = Math.random() * (ALTURA_TABLERO - DIAMETRO_BOLA) + "px"
     bola.style.left = Math.random() * (ANCHURA_TABLERO - DIAMETRO_BOLA) + "px"
+}
+
+function imprimirRecords() {
+    const cuerpo = document.querySelector("#records>tbody")
+    records.forEach( (r,i) => {
+        let nuevaFila = cuerpo.insertRow()
+        let celda1 = nuevaFila.insertCell()
+        let celda2 = nuevaFila.insertCell()
+        let celda3 = nuevaFila.insertCell()
+        celda1.textContent = i + 1
+        celda2.textContent = r.name
+        celda3.textContent = r.points
+    })
 }
