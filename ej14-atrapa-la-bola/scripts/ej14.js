@@ -13,9 +13,16 @@ const tiempo = document.querySelector("#tiempo")
 const puntos = document.querySelector("#puntos")
 const btnEmpezar = document.querySelector("#btnEmpezar")
 
-let cuentaAtras
-let 
+let cuentaAtras //interval para el marcador de tiempo
+let agitador  //interval para mover la bola
 let partidaEnMarcha = false
+let records = [
+    {name: "Andrew", points: "10"},
+    {name: "Pamela", points: "8"},
+    {name: "Elisabeth", points: "6"},
+    {name: "George", points: "4"},
+    {name: "Caroline", points: "2"}
+]
 
 //1. El botón EMPEZAR pone una partida en marcha
 btnEmpezar.addEventListener("click",function(){
@@ -23,8 +30,13 @@ btnEmpezar.addEventListener("click",function(){
     // a) Inicializar una cuenta atrás de 10 segundos
     tiempo.textContent = 10
     puntos.textContent = 0
+    
     clearInterval(cuentaAtras) //por si ya había una partida en marcha
     cuentaAtras = setInterval(decrementarSegundos,1000)
+    
+    clearInterval(agitador)
+    agitador = setInterval(moverBola,1000)
+    
     moverBola()
     partidaEnMarcha = true
 })
@@ -33,16 +45,22 @@ btnEmpezar.addEventListener("click",function(){
 //  Al llegar a 0, se detiene (pista: clearInterval)
 function decrementarSegundos() {
     tiempo.textContent--
-    moverBola()
     if (tiempo.textContent == "0") {
         clearInterval(cuentaAtras)
+        clearInterval(agitador)
         partidaEnMarcha = false
     }
 }
 
 //3. Que la bola sea clicable para sumar puntos SOLO con la partida en marcha 
 bola.addEventListener("click",function(){
-    if (partidaEnMarcha) puntos.textContent++
+    if (partidaEnMarcha) {
+        puntos.textContent++
+        //recolocamos la bola y reiniciamos el agitador (interval que mueve bola)
+        moverBola()
+        clearInterval(agitador)
+        agitador = setInterval(moverBola,1000)
+    }
 })
 
 function moverBola() {
