@@ -5,15 +5,30 @@ decimal.value = 0
         1 SOLO addEventListener PARA EL DIV PADRE
                 DELEGACIÓN DE EVENTOS
 ************************************************** */
-
+const byte = document.querySelector("#byte")
+const botones = document.querySelectorAll("#byte>button")
+byte.addEventListener("click",function(evento){
+    //averiguar si el click es para el div padre o para uno de sus hijos
+    if (evento.target.nodeName == "BUTTON") {
+        //clic en un botón
+        let posicion = Array.from(byte.children).indexOf(evento.target)
+        if (evento.target.textContent == "0") {
+            evento.target.textContent = "1"
+            decimal.value = parseInt(decimal.value) + Math.pow(2,botones.length-posicion-1)
+        } else {
+            evento.target.textContent = "0"
+            decimal.value = parseInt(decimal.value) - Math.pow(2,botones.length-posicion-1)
+        }
+    }
+})
 
 
 /* ***********************************************
                     SOLUCIÓN 2
         MISMO addEventListener PARA CADA BOTÓN
 ************************************************** */
-const botones = document.querySelectorAll("#byte>button")
-const pesos = [128,64,32,16,8,4,2,1]
+/* const botones = document.querySelectorAll("#byte>button")
+
 for (let i=0; i<botones.length; i++) {
     botones[i].addEventListener("click",function(){
         if (botones[i].textContent == "0") {
@@ -22,14 +37,14 @@ for (let i=0; i<botones.length; i++) {
         } else {
             botones[i].textContent = "0"
             decimal.value = parseInt(decimal.value) - pesos[i]
-        }
+        } */
 
         /* opción super compacta con operador % y ternario
         botones[i].textContent = ++botones[i].value % 2
         decimal.value = parseInt(decimal.value) + (botones[i].textContent == "1" ? pesos[i] : -pesos[i])
         */
-    })
-}
+/*     })
+} */
 
 /* ***********************************************
                     SOLUCIÓN 1
