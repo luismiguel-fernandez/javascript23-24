@@ -16,13 +16,19 @@ const btnEmpezar = document.querySelector("#btnEmpezar")
 let cuentaAtras //interval para el marcador de tiempo
 let agitador  //interval para mover la bola
 let partidaEnMarcha = false
-let records = [
-    {name: "Andrew", points: "10"},
-    {name: "Pamela", points: "8"},
-    {name: "Elisabeth", points: "6"},
-    {name: "George", points: "4"},
-    {name: "Caroline", points: "2"}
-]
+
+let records = localStorage.getItem("atrapaBolaRecords")
+if (records) {
+    records = JSON.parse(records)
+} else {
+    records = [
+        {name: "Andrew", points: 10},
+        {name: "Pamela", points: 8},
+        {name: "Elisabeth", points: 6},
+        {name: "George", points: 4},
+        {name: "Caroline", points: 2}
+    ]
+}
 imprimirRecords()
 
 //1. El botón EMPEZAR pone una partida en marcha
@@ -50,7 +56,26 @@ function decrementarSegundos() {
         clearInterval(cuentaAtras)
         clearInterval(agitador)
         partidaEnMarcha = false
-    }
+        //comprobar si mis puntos mejoran el peor de los records
+        if (puntos.textContent > records[records.length-1].points) {
+            let nick = prompt("Escribe tu nombre (12 caracteres)")
+            if (!nick) nick = "Anónimo"
+            nick = nick.trim().substring(0,11)
+            records.push({name: nick, points: parseInt(puntos.textContent) })
+            records.sort(function(a,b){
+                if (a.points < b.points) {
+                    return 1;
+                } else if (a.points > b.points) {
+                    return -1;
+                }
+                return 0;
+            })
+            records.pop()
+            imprimirRecords()
+            //guardar la tabla de records en LocalStorage para que no se pierdan
+            localStorage.setItem("atrapaBolaRecords",JSON.stringify(records))
+        } // if puntos en record
+    } // if tiempo es 0
 }
 
 //3. Que la bola sea clicable para sumar puntos SOLO con la partida en marcha 
@@ -71,6 +96,7 @@ function moverBola() {
 
 function imprimirRecords() {
     const cuerpo = document.querySelector("#records>tbody")
+    cuerpo.innerHTML = ""
     records.forEach( (r,i) => {
         let nuevaFila = cuerpo.insertRow()
         let celda1 = nuevaFila.insertCell()
