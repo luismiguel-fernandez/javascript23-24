@@ -1,12 +1,18 @@
-const ANCHO_TABLERO = 8
-const ALTO_TABLERO = 8
-const NUM_MINAS = 10
+const ANCHO_TABLERO = 3
+const ALTO_TABLERO = 3
+const NUM_MINAS = 3
 const ANCHO_CELDA = 30
 
 const tablero = document.querySelector("#tablero")
 
+const labelTiempo = document.querySelector("#tiempo")
 const labelFila = document.querySelector("#fila")
 const labelCol = document.querySelector("#columna")
+const labelMina = document.querySelector("#mina")
+
+let tablaRecords = []
+
+let celdasVaciasPorClicar = ANCHO_TABLERO * ALTO_TABLERO - NUM_MINAS
 
 
 function generarTablero(ancho,alto){
@@ -28,7 +34,7 @@ function colocarMinas(ancho,alto,numMinas) {
         let posicion = Math.floor( Math.random() * ancho * alto )
         if (todasLasCeldas[posicion].dataset.mina == "false") {
             todasLasCeldas[posicion].dataset.mina = true
-            todasLasCeldas[posicion].classList.add("mina")
+            //todasLasCeldas[posicion].classList.add("mina")
             minasPorColocar--
         }
     }
@@ -47,14 +53,51 @@ function calcularMinasAlrededor(f,c) {
     return contador
 }
 
+function bloquearTablero() {
+    todasLasCeldas.forEach( celda => {
+        celda.dataset.clicada = true
+        if (celda.dataset.mina == "true") {
+            celda.classList.add("mina")
+        }
+    })
+}
+
+function imprimirRecords() {
+    const cuerpo = document.querySelector("#tablaPuntuaciones>tbody")
+    cuerpo.innerHTML = ""
+    tablaRecords.forEach( (r,i) => {
+        let nuevaFila = cuerpo.insertRow()
+        let celda1 = nuevaFila.insertCell()
+        let celda2 = nuevaFila.insertCell()
+        let celda3 = nuevaFila.insertCell()
+        celda1.textContent = i + 1
+        celda2.textContent = "Luismi"
+        celda3.textContent = r
+    })
+}
+
+
+/* ************************************************************** */
+/*    Código que se ejecuta automáticamente al cargar la página   */
+/* ************************************************************** */
+
+if (localStorage.getItem("records")) {
+    tablaRecords = JSON.parse( localStorage.getItem("records") )
+    imprimirRecords()
+}
+
 generarTablero(ANCHO_TABLERO, ALTO_TABLERO)
 const todasLasCeldas = tablero.querySelectorAll("div.celda")
 colocarMinas(ANCHO_TABLERO, ALTO_TABLERO, NUM_MINAS)
+
+labelTiempo.textContent = 0
+let crono = setInterval( ()=>{labelTiempo.textContent++} , 1000)
 
 tablero.addEventListener("mouseover",function(ev){
     if (ev.target.classList.contains("celda")) {
         labelFila.textContent = ev.target.dataset.fila
         labelCol.textContent = ev.target.dataset.col
+        labelMina.textContent = ev.target.dataset.mina
     }
 })
 
@@ -65,15 +108,32 @@ tablero.addEventListener("click",function(ev){
             ev.target.dataset.clicada = true
             //comprobar si explota mina
             if (ev.target.dataset.mina == "true") {
-                //fin de la partida
-                //mostrar todas las minas
+                //fin de la partida:
                 //cambiar el aspecto de la mina clicada
-                
-                alert("mueres")
+                ev.target.classList.add("mina_explotada")
+                //detener el crono
+                clearInterval(crono)
+                //detener la posibilidad de que el usuario siga clicando
+                // y mostrar todas las minas
+                bloquearTablero()
+
             } else {
                 //si no has explotado mina
                 let minasAlrededor = calcularMinasAlrededor(parseInt(ev.target.dataset.fila) , parseInt(ev.target.dataset.col))
                 ev.target.classList.add("celda_clicada" + minasAlrededor)
+                //contar si has ganado
+                celdasVaciasPorClicar--
+                console.log(celdasVaciasPorClicar)
+                if (celdasVaciasPorClicar == 0) {
+                    //victoria:
+                    clearInterval(crono)
+                    tablaRecords.push(parseInt(labelTiempo.textContent))
+                    tablaRecords.sort( (a,b) => a-b )
+                    localStorage.setItem("records", JSON.stringify(tablaRecords) )
+                    console.log(tablaRecords)
+                    bloquearTablero()
+                    imprimirRecords()
+                }
             }
         }
     }
