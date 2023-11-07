@@ -65,6 +65,10 @@ tablero.addEventListener("click",function(ev){
             ev.target.dataset.clicada = true
             //comprobar si explota mina
             if (ev.target.dataset.mina == "true") {
+                //fin de la partida
+                //mostrar todas las minas
+                //cambiar el aspecto de la mina clicada
+                
                 alert("mueres")
             } else {
                 //si no has explotado mina
