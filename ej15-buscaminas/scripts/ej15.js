@@ -1,6 +1,6 @@
-const ANCHO_TABLERO = 3
-const ALTO_TABLERO = 3
-const NUM_MINAS = 3
+const ANCHO_TABLERO = 8
+const ALTO_TABLERO = 8
+const NUM_MINAS = 10
 const ANCHO_CELDA = 30
 
 const tablero = document.querySelector("#tablero")
@@ -103,6 +103,10 @@ tablero.addEventListener("mouseover",function(ev){
 
 tablero.addEventListener("click",function(ev){
     if (ev.target.classList.contains("celda")) {
+        //descartar los clics en celdas con bandera
+        if (ev.target.classList.contains("celda_bandera") {
+            return
+        }
         //comprobar si ya ha sido clicada la celda previamente
         if (ev.target.dataset.clicada == "false") {
             ev.target.dataset.clicada = true
@@ -139,7 +143,14 @@ tablero.addEventListener("click",function(ev){
     }
 })
 
-
+tablero.addEventListener("contextmenu",function(ev){
+    ev.preventDefault()
+    if (ev.target.classList.contains("celda")) {
+        if (ev.target.dataset.clicada == "false") {
+            ev.target.classList.toggle("celda_bandera")
+        }
+    }
+})
 
 
 
