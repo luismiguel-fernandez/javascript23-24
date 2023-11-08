@@ -1,10 +1,10 @@
-const ANCHO_TABLERO = 8
-const ALTO_TABLERO = 8
-const NUM_MINAS = 10
+let ANCHO_TABLERO = 8
+let ALTO_TABLERO = 8
+let NUM_MINAS = 10
 const ANCHO_CELDA = 30
 
 const tablero = document.querySelector("#tablero")
-
+const selectModo = document.querySelector("#modo")
 const labelTiempo = document.querySelector("#tiempo")
 const labelFila = document.querySelector("#fila")
 const labelCol = document.querySelector("#columna")
@@ -86,8 +86,11 @@ if (localStorage.getItem("records")) {
     imprimirRecords()
 }
 
+//Poner el SELECT en su primera opción de manera predeterminada por si el navegador no lo resetea
+selectModo.selectedIndex = 0
+
 generarTablero(ANCHO_TABLERO, ALTO_TABLERO)
-const todasLasCeldas = tablero.querySelectorAll("div.celda")
+let todasLasCeldas = tablero.querySelectorAll("div.celda")
 colocarMinas(ANCHO_TABLERO, ALTO_TABLERO, NUM_MINAS)
 
 labelTiempo.textContent = 0
@@ -104,7 +107,7 @@ tablero.addEventListener("mouseover",function(ev){
 tablero.addEventListener("click",function(ev){
     if (ev.target.classList.contains("celda")) {
         //descartar los clics en celdas con bandera
-        if (ev.target.classList.contains("celda_bandera") {
+        if (ev.target.classList.contains("celda_bandera")) {
             return
         }
         //comprobar si ya ha sido clicada la celda previamente
@@ -144,6 +147,7 @@ tablero.addEventListener("click",function(ev){
 })
 
 tablero.addEventListener("contextmenu",function(ev){
+    //impedir que se muestre el menú contextual típico del botón derecho
     ev.preventDefault()
     if (ev.target.classList.contains("celda")) {
         if (ev.target.dataset.clicada == "false") {
@@ -152,6 +156,33 @@ tablero.addEventListener("contextmenu",function(ev){
     }
 })
 
+selectModo.addEventListener("change",function(ev){
+    switch (this.value) {
+        case "easy":
+            ANCHO_TABLERO = 8
+            ALTO_TABLERO = 8
+            NUM_MINAS = 10
+            break;
+        case "medium":
+            ANCHO_TABLERO = 16
+            ALTO_TABLERO = 16
+            NUM_MINAS = 40       
+            break;
+        case "hard":
+            ANCHO_TABLERO = 30
+            ALTO_TABLERO = 16
+            NUM_MINAS = 99       
+            break;
+    }
+    //destruir tablero y volverlo a construir
+    tablero.innerHTML = ""
+    generarTablero(ANCHO_TABLERO, ALTO_TABLERO)
+    todasLasCeldas = tablero.querySelectorAll("div.celda")
+    colocarMinas(ANCHO_TABLERO, ALTO_TABLERO, NUM_MINAS)
+    labelTiempo.textContent = 0
+    clearInterval(crono)
+    crono = setInterval( ()=>{labelTiempo.textContent++} , 1000)
+})
 
 
 
