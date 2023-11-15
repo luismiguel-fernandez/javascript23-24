@@ -6,10 +6,10 @@ const pesoError = document.querySelector("#pesoError")
 
 form.action = "server/todoOK.html"
 
-form.addEventListener("submit",function(ev) {
+form.addEventListener("submit", function(ev) {
     ev.preventDefault()
-
-    if ( todoOK() ) this.submit()
+    if ( todoOK() )
+        this.submit()
 })
 
 function todoOK() {
@@ -34,3 +34,4 @@ function todoOK() {
     }
     return todook
 }
+
