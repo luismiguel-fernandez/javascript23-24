@@ -23,3 +23,22 @@ fetch("server/cargaProvinciasXML.php")
         selProvincias.append(newOption)
     })
 })
+
+selProvincias.addEventListener("change",function(){
+    if (this.value != "0") {
+        fetch("server/cargaMunicipiosXML.php?provincia=" + this.value)
+        .then( respuesta => respuesta.text() )
+        .then( datos => {
+            selMunicipios.innerHTML = "<option value='0'>(Elige municipio)</option>"
+            let parser = new DOMParser()
+            let xml = parser.parseFromString(datos, "text/xml")
+            let todosLosMuni = xml.querySelectorAll("municipio")
+            todosLosMuni.forEach( m => {
+                let newOption = document.createElement("OPTION")
+                newOption.textContent = m.lastChild.textContent
+                newOption.value = m.firstChild.textContent
+                selMunicipios.append(newOption)
+            })
+        } )
+    }
+})
