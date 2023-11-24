@@ -1,4 +1,4 @@
-body, div.container {
+/* body  {
     background-color: grey;
     font-family: "Fjalla One", sans-serif;
 }
@@ -29,7 +29,6 @@ ul {
     width: 450px;
     border: thin solid black;
     margin: auto;
-    /*background-color: white;*/
     background-color: darkslategrey;
 }
 
@@ -67,4 +66,4 @@ ul {
 
 #tableResultados, #tableResultados tr, #tableResultados td {
     width: 100%;
-}
+} */

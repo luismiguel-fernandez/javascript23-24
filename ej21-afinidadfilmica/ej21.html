@@ -15,18 +15,23 @@
         <div class="row">
           <div class="col">
 
-            <div id="divBuscadorL"> <!-- VERSIÓN IZQUIERDA -->
+            <div class="row" id="divBuscadorL"> <!-- VERSIÓN IZQUIERDA -->
                 <h1>Buscador de películas</h1>
-                <input type="text" id="buscadorL"></input>
-                <select id="type">
-                    <option value="tit">Películas</option>
-                    <option value="dir">Directores</option>
-                    <option value="act">Actores</option>
-                    <option value="all">Todo</option>
-                </select>
+                <div class="input-group mb-3">
+                    <input type="text" id="buscadorL" class="form-control" aria-label="Text input with dropdown button">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Películas</a></li>
+                      <li><a class="dropdown-item" href="#">Intérpretes</a></li>
+                      <li><a class="dropdown-item" href="#">Directores/as</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Todo</a></li>
+                    </ul>
+                </div>
+
             </div>
-            <div id="divResultadosL">
-                <table id="tableResultados">
+            <div class="row" id="divResultadosL">
+                <table class="table" id="tableResultados">
                     <thead>
                         <tr>
                         </tr>
@@ -40,7 +45,7 @@
                 </table>
             </div>
             <div id="divSeleccionadosL">
-                <table>
+                <table class="table">
                     <thead>
                         <tr>
                             <th><input type="checkbox"></input></th>
