@@ -164,6 +164,21 @@ function xmlAddAct($xml, $root, $id, $connection) {
 	return $flag;
 }
 function xmlAddDirCarreer($xml, $root, $id, $connection) {
+	$sql = "SELECT * FROM peliculas WHERE director='".$id."'";
+	$query = $connection->prepare($sql);
+	$query->execute();
+	$flag = false;
+	while ($row = $query->fetch(PDO::FETCH_NAMED)){
+		$flag = true;
+		$node = $xml->createElement("resultado");
+		$fila = $root->appendChild($node);
+		$node = $xml->createElement("tipo","tit");
+		$newnode = $fila->appendChild($node);
+		foreach ($row as $columna => $valor) {
+			$node = $xml->createElement($columna,$valor);
+			$newnode = $fila->appendChild($node);
+		}
+	}
 	return $flag;
 }
 function xmlAddActCarreer($xml, $root, $id, $connection) {
