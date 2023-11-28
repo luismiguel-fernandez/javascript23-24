@@ -13,22 +13,19 @@
 <body>
     <div class="container text-center">
         <div class="row">
-          <div class="col" id="colL">
 
+          <div class="col" id="colL">
             <div class="row" id="divBuscadorL"> <!-- VERSIÓN IZQUIERDA -->
                 <h1>Buscador de películas</h1>
                 <div class="input-group mb-3">
-                    <input type="text" id="buscadorL" class="form-control" aria-label="Text input with dropdown button">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Películas</a></li>
-                      <li><a class="dropdown-item" href="#">Intérpretes</a></li>
-                      <li><a class="dropdown-item" href="#">Directores/as</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Todo</a></li>
-                    </ul>
+                    <input type="text" id="buscadorL" class="form-control">
+                    <select class="form-select">
+                        <option selected value="0">Todo</option>
+                        <option value="1">Películas</option>
+                        <option value="2">Intérpretes</option>
+                        <option value="3">Directores/as</option>
+                    </select>
                 </div>
-
             </div>
             <div class="row" id="divResultadosL">
                 <table class="table" id="tableResultados">
@@ -57,38 +54,35 @@
                     <tfoot>
                         <tr>
                             <td colspan="3">
-                                <input type="button" value="Marcar directores">
-                                <input type="button" value="Marcar películas">
-                                <input type="button" value="Marcar actores">
+                                <button class="btn btn-info">Marcar películas</button>
+                                <button class="btn btn-info">Marcar actores</button>
+                                <button class="btn btn-info">Marcar directores</button>
                                 <br/>
-                                <input type="button" value="Borrar marcados">
-                            </input></td>
+                                <button class="btn btn-danger">Borrar marcados</button>
+                            </td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
-
           </div>
-          <div class="col" id="colR"> <!-- VERSIÓN DERECHA -->
 
-            <div id="divBuscadorR">
+          <div class="col" id="colR"> <!-- VERSIÓN DERECHA -->
+            <div class="row" id="divBuscadorR">
                 <h1>Buscador de películas</h1>
                 <input type="text" id="buscadorR" class="form-control">
-                <div id="divSugerenciasR"></div>
+                <!-- <div id="divSugerenciasR"></div> -->
             </div>
-            <div id="divResultadosR">
+            <div class="row" id="divResultadosR">
                 <h3 class="menu">Películas</h3>
-                <ul class="listaResultadosR"></ul>
-                <h3 class="menu">Directores</h3>
                 <ul class="listaResultadosR"></ul>
                 <h3 class="menu">Actores</h3>
                 <ul class="listaResultadosR"></ul>
+                <h3 class="menu">Directores</h3>
+                <ul class="listaResultadosR"></ul>
             </div>
-
           </div>
+
         </div>
       </div>
-
-
 </body>
 </html>
